@@ -28,8 +28,13 @@ Ces fichiers sont conçus pour être lus et testés facilement.
 3. Collez-le dans un compilateur en ligne comme **[OnlineGDB.com](https://www.onlinegdb.com/online_c++_compiler)**.
 4. Cliquez sur **Run** et observez le résultat. Modifiez le code et testez à nouveau !
 
-### Option 2 : Compilation locale (Avec g++ / VS Code)
-Si vous avez un environnement C++ configuré (ex: MSYS2/MinGW ou WSL), vous pouvez compiler les fichiers directement :
+### Option 2 : Compilation locale (Recommandée pour ce cours)
+Dans le cadre de cet apprentissage, j'utilise **Visual Studio Code (VS Code)** sur **Windows** avec les extensions suivantes :
+- **C/C++** (pour l'autocomplétion et le débogage)
+- **CMake Tools** (pour la gestion du build, essentiel pour Geant4)
+- **WSL (Windows Subsystem for Linux)** (pour faire tourner l'environnement Linux indispensable à Geant4 directement sous Windows)
+
+Avec cet environnement configuré, vous pouvez compiler les fichiers depuis le terminal WSL intégré à VS Code :
 ```bash
 g++ -o variables 01_variables_et_types.cpp
 ./variables
