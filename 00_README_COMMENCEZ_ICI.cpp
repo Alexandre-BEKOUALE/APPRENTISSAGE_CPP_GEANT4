@@ -5,14 +5,18 @@
 // Il vous explique comment utiliser ces fichiers et dans quel ordre les lire.
 // ==============================================================================
 
-// COMMENT TESTER UN FICHIER SUR ONLINEGDB.COM :
+// COMMENT COMPILER ET TESTER UN FICHIER DANS VS CODE :
 // -----------------------------------------------
-// 1. Allez sur https://www.onlinegdb.com/online_c++_compiler
-// 2. Copiez-collez le contenu d'un fichier .cpp dans la zone de texte
-// 3. Cliquez sur le bouton vert "Run"
-// 4. Observez le résultat en bas dans la zone "Output"
-// 5. Modifiez une valeur et observez comment le résultat change
-// Ce test "Modifier/Observer" est la MEILLEURE façon d'apprendre !
+// Cet apprentissage est pensé pour votre environnement : Windows + VS Code + WSL.
+// Vous avez les extensions C/C++ et CMake Tools.
+// 1. Ouvrez ce dossier dans VS Code.
+// 2. Ouvrez un terminal intégré (Ctrl + ù) qui doit être en mode WSL (Ubuntu/Linux).
+// 3. Compilez un fichier avec la commande g++ :
+//    Exemple : g++ -o variables 01_variables_et_types.cpp
+// 4. Exécutez le programme généré :
+//    Exemple : ./variables
+// 5. Modifiez le code, sauvegardez, recompilez et observez les changements.
+// Ce cycle "Modifier/Compiler/Observer" est la MEILLEURE façon d'apprendre !
 
 // ORDRE DE LECTURE RECOMMANDÉ :
 // -----------------------------------------------
