@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apprentissage C++ pour Geant4</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #3b82f6;
+            --success: #10b981;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --border: rgba(255, 255, 255, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 2rem;
+            min-height: 100vh;
+            background-image: radial-gradient(circle at top right, #1e1b4b 0%, var(--bg-color) 40%);
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 3rem;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        .progress-track {
+            height: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--success));
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        /* Course List */
+        .course-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            backdrop-filter: blur(10px);
+        }
+
+        .course-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .course-card.completed {
+            border-left: 4px solid var(--success);
+        }
+
+        .course-card.crucial {
+            border-left: 4px solid #ef4444; /* Red for crucial */
+        }
+        
+        .course-card.completed.crucial {
+            border-left: 4px solid var(--success);
+        }
+
+        /* Checkbox styling */
+        .checkbox-wrapper {
+            position: relative;
+        }
+
+        .checkbox-wrapper input[type="checkbox"] {
+            appearance: none;
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--text-muted);
+            border-radius: 6px;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: grid;
+            place-content: center;
+        }
+
+        .checkbox-wrapper input[type="checkbox"]::before {
+            content: "";
+            width: 14px;
+            height: 14px;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em var(--bg-color);
+            background-color: var(--bg-color);
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked {
+            background: var(--success);
+            border-color: var(--success);
+        }
+
+        .checkbox-wrapper input[type="checkbox"]:checked::before {
+            transform: scale(1);
+        }
+
+        .course-info {
+            flex-grow: 1;
+        }
+
+        .course-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin: 0 0 0.25rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .course-desc {
+            color: var(--text-muted);
+            margin: 0;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            background: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .file-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-family: monospace;
+            background: rgba(59, 130, 246, 0.1);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+        
+        .file-link:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Apprentissage C++ orienté Geant4</h1>
+            <p class="subtitle">Tableau de bord de progression pour la Physique Nucléaire</p>
+        </header>
+
+        <div class="progress-container">
+            <div class="progress-header">
+                <span>Progression Globale</span>
+                <span id="progress-text">0% (0/8)</span>
+            </div>
+            <div class="progress-track">
+                <div class="progress-fill" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="course-list">
+            
+            <!-- Module 00 -->
+            <div class="course-card" id="card-00">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-00" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">00. Guide de Navigation</h3>
+                    <p class="course-desc">Introduction au cours, ordre de lecture, et instructions pour tester le code avec <a href="00_README_COMMENCEZ_ICI.cpp" class="file-link">00_README_COMMENCEZ_ICI.cpp</a>.</p>
+                </div>
+            </div>
+
+            <!-- Module 01 -->
+            <div class="course-card" id="card-01">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-01" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">01. Variables et Types de base</h3>
+                    <p class="course-desc">Comprendre comment stocker des énergies, des noms de particules et des compteurs. Fichier : <a href="01_variables_et_types.cpp" class="file-link">01_variables_et_types.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 02 -->
+            <div class="course-card" id="card-02">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-02" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">02. Conditions et Boucles</h3>
+                    <p class="course-desc">La logique de contrôle : simuler N particules ou vérifier des seuils d'énergie. Fichier : <a href="02_conditions_et_boucles.cpp" class="file-link">02_conditions_et_boucles.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 03 -->
+            <div class="course-card" id="card-03">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-03" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">03. Les Fonctions</h3>
+                    <p class="course-desc">Créer des blocs de code réutilisables. Introduction vitale au passage par référence (&). Fichier : <a href="03_fonctions.cpp" class="file-link">03_fonctions.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 04 -->
+            <div class="course-card crucial" id="card-04">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-04" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">04. Pointeurs et Mémoire <span class="badge">Crucial Geant4</span></h3>
+                    <p class="course-desc">Le cœur de Geant4 : l'allocation dynamique avec *, new, delete, et ->. Fichier : <a href="04_pointeurs_et_memoire.cpp" class="file-link">04_pointeurs_et_memoire.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 05 -->
+            <div class="course-card crucial" id="card-05">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-05" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">05. Classes et Héritage <span class="badge">Crucial Geant4</span></h3>
+                    <p class="course-desc">La Programmation Orientée Objet. Comprendre 'virtual' et 'override' pour créer vos détecteurs. Fichier : <a href="05_classes_et_heritage.cpp" class="file-link">05_classes_et_heritage.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 06 -->
+            <div class="course-card" id="card-06">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-06" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">06. Structure .hh et .cc</h3>
+                    <p class="course-desc">Comment organiser les fichiers d'un projet professionnel et gérer les inclusions. Fichier : <a href="06_structure_hh_cc.cpp" class="file-link">06_structure_hh_cc.cpp</a></p>
+                </div>
+            </div>
+
+            <!-- Module 07 -->
+            <div class="course-card" id="card-07">
+                <div class="checkbox-wrapper">
+                    <input type="checkbox" id="check-07" onchange="updateProgress()">
+                </div>
+                <div class="course-info">
+                    <h3 class="course-title">07. Spécificités Geant4</h3>
+                    <p class="course-desc">Les std::vector, enum class, mathématiques et le pont direct vers le framework Geant4. Fichier : <a href="07_specifique_geant4.cpp" class="file-link">07_specifique_geant4.cpp</a></p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const totalCourses = 8;
+        
+        // Load saved progress when page loads
+        window.onload = () => {
+            for (let i = 0; i < totalCourses; i++) {
+                const id = '0' + i;
+                const savedState = localStorage.getItem('course_' + id);
+                if (savedState === 'true') {
+                    document.getElementById('check-' + id).checked = true;
+                    document.getElementById('card-' + id).classList.add('completed');
+                }
+            }
+            updateProgress();
+        };
+
+        function updateProgress() {
+            let completed = 0;
+            
+            for (let i = 0; i < totalCourses; i++) {
+                const id = '0' + i;
+                const isChecked = document.getElementById('check-' + id).checked;
+                const card = document.getElementById('card-' + id);
+                
+                // Save state
+                localStorage.setItem('course_' + id, isChecked);
+                
+                // Update UI styling
+                if (isChecked) {
+                    card.classList.add('completed');
+                    completed++;
+                } else {
+                    card.classList.remove('completed');
+                }
+            }
+
+            // Update Progress Bar
+            const percentage = (completed / totalCourses) * 100;
+            document.getElementById('progress-bar').style.width = percentage + '%';
+            document.getElementById('progress-text').innerText = Math.round(percentage) + '% (' + completed + '/' + totalCourses + ')';
+        }
+    </script>
+</body>
+</html>
